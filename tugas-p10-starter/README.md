@@ -213,35 +213,7 @@ GPT AI untuk membatu menulis skenario augmentasi dan memperbaiki error, pada bag
 
 ## Cara menjalankan ulang
 
-Eksperimen segmentasi polip dijalankan melalui dua metode, yaitu menggunakan lingkungan lokal dengan Jupyter Lab atau menggunakan Google Colab.
-
-### 1. Menjalankan melalui lingkungan lokal
-
-Pastikan Python dan `uv` sudah terpasang pada komputer. Selanjutnya, lakukan langkah berikut:
-
-1. Clone repository GitHub:
-   ```bash
-   git clone URL_REPOSITORY
-   ```
-
-2. Masuk ke direktori proyek:
-   ```bash
-   cd tugas-p10-starter
-   ```
-
-3. Instal seluruh dependensi yang dibutuhkan:
-   ```bash
-   uv sync
-   ```
-
-4. Jalankan Jupyter Lab dengan membuka notebook:
-   ```bash
-   uv run jupyter lab segmentasi_polip.ipynb
-   ```
-
-5. Jalankan setiap cell notebook secara berurutan hingga seluruh proses eksperimen selesai.
-
-### 2. Menjalankan melalui Google Colab
+Eksperimen segmentasi polip dijalankan melalui metode menggunakan Google Colab.
 
 Eksperimen juga menggunakan Google Colab dengan langkah berikut:
 
