@@ -23,6 +23,7 @@
 ## 1. Pertanyaan
 
 Augmentasi apa yang membantu U-Net menemukan polip pada citra kolonoskopi, dan augmentasi apa yang tidak? Kenapa?
+
 tidak ada augmentasi yang terbukti meningkatkan performa U-Net dibandingkan kondisi tanpa augmentasi. Dari dua metode augmentasi yang diuji, Rotation memberikan hasil yang lebih baik daripada Brightness & Contrast, tetapi keduanya masih berada di bawah baseline.
 
 ## 2. Data & pengaturan
