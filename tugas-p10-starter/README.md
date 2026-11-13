@@ -34,8 +34,6 @@ tidak ada augmentasi yang terbukti meningkatkan performa U-Net dibandingkan kond
 - Model: U-Net mini (±0,5 juta parameter), 40 epoch, 3 ulangan per skenario.
 - Dijalankan di: Google Colab T4 GPU.
 
-![Contoh data](hasil/contoh_data.png)
-
 ## 3. Skenario augmentasi & hipotesis
 
 <!-- Tulis bagian ini SEBELUM menjalankan eksperimen. Commit dulu, baru jalankan.
@@ -47,20 +45,33 @@ tidak ada augmentasi yang terbukti meningkatkan performa U-Net dibandingkan kond
 | Rotation | `v2.RandomRotation(degrees=180)` | Orientasi kamera endoskop dapat berubah akibat pergerakan dan manuver alat selama pemeriksaan kolonoskopi. | Dice meningkat |
 | Brightness & Contrast | `v2.ColorJitter(brightness=0.3, contrast=0.3)` | Intensitas pencahayaan dan kontras citra dapat bervariasi akibat perubahan pencahayaan endoskop dan kondisi permukaan mukosa. | Dice meningkat |
 
-Contoh augmentasi yang dicoba:
-
-![Contoh augmentasi Rotation](hasil/augmentasi_rotation.png)
-
-![Contoh augmentasi Brightness & Contrast](hasil/augmentasi_kecerahan_dan_kontras.png)
 <!-- Ganti nama file sesuai skenario kalian (lihat isi folder hasil/). -->
 
 ## 4. Hasil
 
 <!-- Tempel isi hasil/ringkasan.md di sini. -->
+4.1 Konfigurasi Eksperimen
+Eksperimen dilakukan menggunakan dataset Kvasir-SEG yang terdiri atas 1.000 citra kolonoskopi beserta mask polip. Sebanyak 200 citra digunakan sebagai data pengujian tetap, sedangkan pelatihan menggunakan 200 citra dari data latih pada setiap pengulangan.
 
-✍️ tempel tabel dari `hasil/ringkasan.md`
+Model yang digunakan ialah U-Net mini dengan konfigurasi pelatihan 40 epoch dan tiga kali pengulangan untuk setiap skenario. Eksperimen dijalankan menggunakan GPU dengan perangkat cuda.
 
-![Perbandingan Dice](hasil/perbandingan.png)
+Tiga skenario yang dibandingkan meliputi:
+1. Tanpa augmentasi sebagai baseline.
+2. Rotation menggunakan RandomRotation(degrees=180).
+3. Brightness & Contrast menggunakan ColorJitter(brightness=0.3, contrast=0.3).
+
+4.2 Hasil Perbandingan Dice dan IoU
+Evaluasi performa dilakukan menggunakan dua metrik, yaitu Dice Coefficient dan Intersection over Union (IoU). Kedua metrik digunakan untuk mengukur tingkat kesesuaian antara hasil segmentasi model dan mask referensi.
+Skenario | Dice (rata-rata ± SD) | IoU (rata-rata ± SD)
+Tanpa augmentasi | 0,598 ± 0,018 | 0,482 ± 0,018
+Rotation | 0,590 ± 0,042 | 0,478 ± 0,041
+Brightness & Contrast | 0,562 ± 0,029 | 0,451 ± 0,026
+Interpretasi hasil:
+- Skenario tanpa augmentasi memperoleh performa tertinggi dengan Dice 0,598 dan IoU 0,482.
+- Rotation memperoleh Dice 0,590 dan IoU 0,478, sedikit lebih rendah dibandingkan baseline.
+- Brightness & Contrast memperoleh Dice 0,562 dan IoU 0,451, sehingga menjadi skenario dengan performa terendah.
+- Rotation memiliki standar deviasi terbesar, menunjukkan variasi hasil antarulangan yang lebih tinggi dibandingkan dua skenario lainnya.
+Jika dibandingkan dengan baseline, Rotation mengalami penurunan Dice sekitar 1,34%, sedangkan Brightness & Contrast mengalami penurunan sekitar 6,02%.
 
 ## 5. Analisis peta kesalahan
 
