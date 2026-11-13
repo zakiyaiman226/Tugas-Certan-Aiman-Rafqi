@@ -17,7 +17,7 @@
 
 | Nama | NIM | Username GitHub | Kontribusi utama |
 |---|---|---|---|
-| ✍️ | ✍️ | ✍️ | ✍️ misal: menjalankan eksperimen, menulis Bagian 3 |
+| Aiman Zakiy | 123430025 | zakiyaiman226 | Membuat repo, menjalankan skenario |
 | ✍️ | ✍️ | ✍️ | ✍️ |
 | ✍️ | ✍️ | ✍️ | ✍️ |
 
@@ -32,7 +32,7 @@ Augmentasi apa yang membantu U-Net menemukan polip pada citra kolonoskopi, dan a
 - Dataset: Kvasir-SEG (1000 citra kolonoskopi + mask polip), diperkecil ke 128 × 128 piksel.
 - Data uji: 200 citra (tetap). Data latih: ✍️ citra per ulangan.
 - Model: U-Net mini (±0,5 juta parameter), ✍️ epoch, ✍️ ulangan per skenario.
-- Dijalankan di: ✍️ (misal: Google Colab T4 / laptop CPU / Mac M1).
+- Dijalankan di: Google Colab T4.
 
 ![Contoh data](hasil/contoh_data.png)
 
