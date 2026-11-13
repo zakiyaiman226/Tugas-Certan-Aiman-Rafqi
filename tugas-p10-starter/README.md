@@ -62,10 +62,13 @@ Tiga skenario yang dibandingkan meliputi:
 
 4.2 Hasil Perbandingan Dice dan IoU
 Evaluasi performa dilakukan menggunakan dua metrik, yaitu Dice Coefficient dan Intersection over Union (IoU). Kedua metrik digunakan untuk mengukur tingkat kesesuaian antara hasil segmentasi model dan mask referensi.
-Skenario | Dice (rata-rata ± SD) | IoU (rata-rata ± SD)
-Tanpa augmentasi | 0,598 ± 0,018 | 0,482 ± 0,018
-Rotation | 0,590 ± 0,042 | 0,478 ± 0,041
-Brightness & Contrast | 0,562 ± 0,029 | 0,451 ± 0,026
+
+| Skenario Augmentasi | Dice (Mean ± SD) | IoU (Mean ± SD) | Keterangan |
+|---|---:|---:|---|
+| Tanpa augmentasi | **0.598 ± 0.018** | **0.482 ± 0.018** | Performa terbaik |
+| Rotation | 0.590 ± 0.042 | 0.478 ± 0.041 | Sedikit di bawah baseline |
+| Brightness & Contrast | 0.562 ± 0.029 | 0.451 ± 0.026 | Performa terendah |
+
 Interpretasi hasil:
 - Skenario tanpa augmentasi memperoleh performa tertinggi dengan Dice 0,598 dan IoU 0,482.
 - Rotation memperoleh Dice 0,590 dan IoU 0,478, sedikit lebih rendah dibandingkan baseline.
