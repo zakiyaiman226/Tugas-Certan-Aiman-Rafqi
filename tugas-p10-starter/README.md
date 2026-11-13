@@ -97,6 +97,13 @@ Sementara itu, Brightness & Contrast menghasilkan Dice 0,00. Prediksi model belu
 
 Analisis: Rotation menunjukkan hasil yang jauh lebih baik pada contoh ini, tetapi hasil satu citra belum cukup untuk menyatakan bahwa Rotation merupakan augmentasi terbaik secara keseluruhan.
 
+| Citra | Tanpa Augmentasi | Rotation | Brightness & Contrast | Analisis |
+|---|---:|---:|---:|---|
+| Citra 1 | 0.00 | **0.87** | 0.00 | Rotation berhasil melakukan segmentasi ketika dua skenario lainnya gagal. |
+| Citra 2 | 0.00 | 0.00 | 0.00 | Ketiga skenario belum berhasil mendeteksi area polip. |
+| Citra 3 | 0.96 | 0.78 | **0.97** | Brightness & Contrast menghasilkan segmentasi terbaik. |
+| Citra 4 | **0.97** | 0.96 | 0.93 | Tanpa augmentasi menghasilkan segmentasi terbaik. |
+
 
 5.2 Citra Pengujian Kedua
 
@@ -118,13 +125,19 @@ Ketiga skenario berhasil mendeteksi sebagian besar area polip. Namun, pada Rotat
 Brightness & Contrast menghasilkan Dice tertinggi pada contoh ini, meskipun selisihnya sangat kecil dibandingkan baseline.
 
 Analisis: Perubahan pencahayaan dan kontras tidak selalu mengurangi kemampuan segmentasi. Pada citra tertentu, skenario tersebut justru menghasilkan prediksi yang sangat mendekati mask referensi.
+
+
 5.4 Citra Pengujian Keempat
+
 Pada citra keempat, tanpa augmentasi memperoleh Dice 0,97, Rotation memperoleh Dice 0,96, sedangkan Brightness & Contrast memperoleh Dice 0,93.
 
 Ketiga skenario berhasil mengidentifikasi sebagian besar area polip. Perbedaan terlihat pada bagian tepi objek, terutama munculnya sedikit False Positive dan False Negative.
 
 Analisis: Ketiga skenario memiliki kemampuan segmentasi yang relatif baik pada citra ini, dengan baseline menghasilkan Dice tertinggi.
+
+
 5.5 Ringkasan Analisis Peta Kesalahan
+
 Berdasarkan keempat contoh yang ditampilkan, dapat disimpulkan bahwa:
 1. Kemampuan model dalam mendeteksi polip berbeda-beda pada setiap citra pengujian.
 2. Rotation menunjukkan keunggulan pada citra pertama, tetapi menghasilkan kesalahan segmentasi lebih besar pada citra ketiga.
@@ -136,20 +149,58 @@ Temuan ini memperlihatkan bahwa efektivitas augmentasi dapat berbeda bergantung 
      Pertanyaan pemandu: Polip seperti apa yang sering terlewat (kecil? datar? warna mirip dinding usus?)
      Apa yang sering dikira polip padahal bukan? Apakah augmentasi memperbaiki kasus sulit? -->
 
-✍️
-
 ## 6. Pembahasan & kesimpulan
+
+6.1 Pembahasan
+Hasil eksperimen menunjukkan bahwa penerapan augmentasi data tidak selalu meningkatkan performa model U-Net dalam melakukan segmentasi polip pada citra kolonoskopi. Berdasarkan nilai rata-rata Dice dan IoU, skenario tanpa augmentasi menghasilkan performa tertinggi dibandingkan Rotation dan Brightness & Contrast.
+
+Skenario Rotation secara teoritis dapat membantu model mengenali polip dalam berbagai orientasi citra akibat perubahan posisi kamera endoskop selama pemeriksaan. Namun, hasil eksperimen menunjukkan Dice sebesar 0,590 dan IoU sebesar 0,478, sedikit lebih rendah dibandingkan baseline. Selain itu, standar deviasi Dice sebesar 0,042 menunjukkan variasi hasil antarulangan yang lebih besar. Dengan demikian, penerapan rotasi hingga 180° belum memberikan peningkatan performa yang konsisten pada konfigurasi penelitian ini.
+
+Pada skenario Brightness & Contrast, nilai Dice sebesar 0,562 dan IoU sebesar 0,451 menunjukkan performa terendah di antara ketiga skenario. Perubahan intensitas kecerahan dan kontras berpotensi mengubah karakteristik visual polip, termasuk tekstur dan perbedaan intensitas antara polip dengan jaringan di sekitarnya. Kondisi tersebut dapat memengaruhi fitur visual yang dipelajari oleh model. Meskipun demikian, penyebab penurunan performa tersebut belum dapat dipastikan hanya berdasarkan hasil evaluasi yang tersedia.
+
+Analisis peta kesalahan memperlihatkan bahwa performa setiap skenario tidak selalu konsisten pada seluruh citra pengujian. Rotation mampu menghasilkan Dice 0,87 pada salah satu contoh ketika baseline dan Brightness & Contrast memperoleh Dice 0,00. Sebaliknya, pada contoh lain, Brightness & Contrast menghasilkan Dice 0,97, lebih tinggi daripada baseline dan Rotation. Hal tersebut menunjukkan bahwa augmentasi tertentu dapat membantu segmentasi pada karakteristik citra tertentu, tetapi belum tentu memberikan manfaat secara keseluruhan.
+
+Terdapat beberapa faktor yang mungkin berkontribusi terhadap hasil eksperimen. Pertama, jumlah data latih sebanyak 200 citra masih terbatas untuk merepresentasikan keragaman karakteristik polip. Kedua, parameter augmentasi yang digunakan belum tentu sesuai dengan seluruh variasi kondisi citra kolonoskopi. Ketiga, perbedaan hasil antarulangan menunjukkan bahwa performa model masih dipengaruhi oleh variasi proses pelatihan.
+
+Secara keseluruhan, hasil penelitian ini menunjukkan bahwa pemilihan augmentasi perlu mempertimbangkan karakteristik dataset dan dampaknya terhadap proses pembelajaran model. Penambahan variasi citra tidak secara otomatis menghasilkan peningkatan kemampuan segmentasi.
+
+| Skenario | Hipotesis Awal | Hasil Eksperimen | Status Hipotesis | Penjelasan |
+|---|---|---|---|---|
+| Tanpa augmentasi | Menjadi baseline pembanding | Dice 0.598; IoU 0.482 | Baseline | Menghasilkan performa rata-rata tertinggi. |
+| Rotation | Dice meningkat | Dice 0.590; IoU 0.478 | Tidak didukung | Rotasi belum memberikan peningkatan performa dibandingkan baseline. |
+| Brightness & Contrast | Dice meningkat | Dice 0.562; IoU 0.451 | Tidak didukung | Perubahan kecerahan dan kontras belum meningkatkan performa segmentasi. |
+
+
+6.2 Kesimpulan
+
+Berdasarkan hasil eksperimen dan analisis yang telah dilakukan, diperoleh beberapa kesimpulan:
+1. Skenario tanpa augmentasi menghasilkan performa segmentasi terbaik dengan Dice sebesar 0,598 ± 0,018 dan IoU sebesar 0,482 ± 0,018.
+2. Augmentasi Rotation belum memberikan peningkatan performa dibandingkan baseline, dengan Dice sebesar 0,590 ± 0,042 dan IoU sebesar 0,478 ± 0,041.
+3. Augmentasi Brightness & Contrast menghasilkan performa terendah dengan Dice sebesar 0,562 ± 0,029 dan IoU sebesar 0,451 ± 0,026.
+4. Peta kesalahan menunjukkan bahwa keberhasilan segmentasi bergantung pada karakteristik masing-masing citra. Tidak ada satu skenario yang selalu menghasilkan segmentasi terbaik pada seluruh contoh.
+5. Pada konfigurasi eksperimen ini, augmentasi Rotation dan Brightness & Contrast belum terbukti meningkatkan kemampuan U-Net dalam melakukan segmentasi polip dibandingkan kondisi tanpa augmentasi.
+Dengan demikian, hipotesis bahwa penerapan Rotation dan Brightness & Contrast dapat meningkatkan performa segmentasi belum didukung oleh hasil eksperimen. Pengujian lebih lanjut dengan jumlah data latih yang lebih besar, variasi parameter augmentasi, serta pengulangan eksperimen yang lebih banyak diperlukan untuk memperoleh kesimpulan yang lebih kuat.
+
+| Aspek Evaluasi | Temuan |
+|---|---|
+| Skenario terbaik | Tanpa augmentasi |
+| Dice tertinggi | 0.598 ± 0.018 |
+| IoU tertinggi | 0.482 ± 0.018 |
+| Augmentasi Rotation | Belum meningkatkan performa dibandingkan baseline. |
+| Augmentasi Brightness & Contrast | Menghasilkan performa terendah. |
+| Hasil analisis visual | Performa setiap skenario berbeda pada masing-masing citra pengujian. |
+| Kesimpulan utama | Augmentasi tidak selalu meningkatkan performa segmentasi U-Net. |
 
 <!-- Bandingkan hasil dengan hipotesis di Bagian 3. Hipotesis yang ternyata salah tetap bernilai,
      asalkan dijelaskan kenapa. Perbedaan kecil (lebih kecil dari simpangan baku) belum tentu berarti. -->
-
-✍️
 
 ## 7. Pembagian kerja
 
 <!-- Siapa mengerjakan apa. Penilaian proses kerja dilihat dari riwayat commit tiap anggota. -->
 
-✍️
+Aiman Zakiy: Membuat repo, menjalankan skenario
+
+Muhammad Rafqi Zulvikar: Membuat README.md
 
 ## 8. Penggunaan AI
 
@@ -157,19 +208,68 @@ Temuan ini memperlihatkan bahwa efektivitas augmentasi dapat berbeda bergantung 
      Contoh: "Claude Code (CLI) untuk menulis skenario augmentasi dan memperbaiki error di Bagian 4.
      Draf Bagian 6 ditulis sendiri, lalu dirapikan bahasanya dengan bantuan AI." -->
 
-✍️
+GPT AI untuk membatu menulis skenario augmentasi dan memperbaiki error, pada bagian README kami menulis semua sendiri.
 
 ## Cara menjalankan ulang
 
-```bash
-uv sync
-uv run jupyter lab segmentasi_polip.ipynb
-```
+Eksperimen segmentasi polip dapat dijalankan melalui dua metode, yaitu menggunakan lingkungan lokal dengan Jupyter Lab atau menggunakan Google Colab.
 
-Atau buka notebook di Google Colab (Runtime → Change runtime type → T4 GPU).
+### 1. Menjalankan melalui lingkungan lokal
+
+Pastikan Python dan `uv` sudah terpasang pada komputer. Selanjutnya, lakukan langkah berikut:
+
+1. Clone repository GitHub:
+   ```bash
+   git clone URL_REPOSITORY
+   ```
+
+2. Masuk ke direktori proyek:
+   ```bash
+   cd tugas-p10-starter
+   ```
+
+3. Instal seluruh dependensi yang dibutuhkan:
+   ```bash
+   uv sync
+   ```
+
+4. Jalankan Jupyter Lab dengan membuka notebook:
+   ```bash
+   uv run jupyter lab segmentasi_polip.ipynb
+   ```
+
+5. Jalankan setiap cell notebook secara berurutan hingga seluruh proses eksperimen selesai.
+
+### 2. Menjalankan melalui Google Colab
+
+Eksperimen juga dapat dijalankan menggunakan Google Colab dengan langkah berikut:
+
+1. Buka Google Colab.
+2. Unggah file `segmentasi_polip.ipynb` atau buka notebook melalui repository GitHub.
+3. Pilih menu **Runtime → Change runtime type**.
+4. Pilih **T4 GPU** pada bagian Hardware accelerator, jika tersedia.
+5. Pastikan konfigurasi eksperimen menggunakan:
+   - Jumlah citra latih: 200
+   - Jumlah epoch: 40
+   - Jumlah pengulangan: 3
+   - Mode cepat (`CEPAT`): `False`
+6. Jalankan seluruh cell notebook menggunakan menu **Runtime → Run all**.
+7. Tunggu hingga seluruh skenario augmentasi selesai dijalankan.
+
+### 3. Keluaran Eksperimen
+
+Setelah proses pelatihan dan evaluasi selesai, notebook akan menghasilkan folder `hasil/` yang berisi:
+
+- `ringkasan.md`: Ringkasan hasil eksperimen.
+- `hasil.json`: Data hasil evaluasi setiap skenario.
+- `perbandingan.png`: Grafik perbandingan performa Dice dan IoU.
+- `peta_kesalahan.png`: Visualisasi kesalahan segmentasi.
+- `contoh_data.png`: Visualisasi contoh data dan mask.
+- File visualisasi augmentasi: Contoh hasil penerapan transformasi pada citra.
+
+Hasil tersebut digunakan untuk membandingkan performa model U-Net pada skenario tanpa augmentasi, Rotation, dan Brightness & Contrast.
 
 ## Referensi
 
 - Jha, D., dkk. (2020). Kvasir-SEG: A Segmented Polyp Dataset. *MultiMedia Modeling (MMM 2020)*, 451–462.
 - Ronneberger, O., Fischer, P., & Brox, T. (2015). U-Net: Convolutional Networks for Biomedical Image Segmentation. *MICCAI*. arXiv:1505.04597.
-- ✍️ tambahkan referensi lain yang kalian pakai
