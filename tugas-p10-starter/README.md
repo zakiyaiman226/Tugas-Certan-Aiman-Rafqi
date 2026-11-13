@@ -52,6 +52,7 @@ tidak ada augmentasi yang terbukti meningkatkan performa U-Net dibandingkan kond
 
 <!-- Tempel isi hasil/ringkasan.md di sini. -->
 4.1 Konfigurasi Eksperimen
+
 Eksperimen dilakukan menggunakan dataset Kvasir-SEG yang terdiri atas 1.000 citra kolonoskopi beserta mask polip. Sebanyak 200 citra digunakan sebagai data pengujian tetap, sedangkan pelatihan menggunakan 200 citra dari data latih pada setiap pengulangan.
 
 Model yang digunakan ialah U-Net mini dengan konfigurasi pelatihan 40 epoch dan tiga kali pengulangan untuk setiap skenario. Eksperimen dijalankan menggunakan GPU dengan perangkat cuda.
@@ -62,6 +63,7 @@ Tiga skenario yang dibandingkan meliputi:
 3. Brightness & Contrast menggunakan ColorJitter(brightness=0.3, contrast=0.3).
 
 4.2 Hasil Perbandingan Dice dan IoU
+
 Evaluasi performa dilakukan menggunakan dua metrik, yaitu Dice Coefficient dan Intersection over Union (IoU). Kedua metrik digunakan untuk mengukur tingkat kesesuaian antara hasil segmentasi model dan mask referensi.
 
 | Skenario Augmentasi | Dice (Mean ± SD) | IoU (Mean ± SD) | Keterangan |
@@ -79,7 +81,56 @@ Jika dibandingkan dengan baseline, Rotation mengalami penurunan Dice sekitar 1,3
 
 ## 5. Analisis peta kesalahan
 
-![Peta kesalahan](hasil/peta_kesalahan.png)
+Peta kesalahan digunakan untuk mengamati perbedaan hasil segmentasi model terhadap mask referensi pada beberapa citra pengujian. Visualisasi menggunakan tiga warna utama:
+- Hijau — True Positive (TP): area polip yang berhasil diprediksi dengan benar.
+- Merah — False Positive (FP): area yang diprediksi sebagai polip, tetapi tidak termasuk dalam mask referensi.
+- Biru — False Negative (FN): area polip pada mask referensi yang tidak berhasil diprediksi oleh model.
+
+
+5.1 Citra Pengujian Pertama
+
+Pada citra pertama, model tanpa augmentasi menghasilkan Dice 0,00. Visualisasi memperlihatkan dominasi warna biru, yang menunjukkan bahwa area polip pada mask referensi tidak berhasil terdeteksi oleh model.
+
+Skenario Rotation menghasilkan Dice 0,87 dengan dominasi area hijau. Hal ini menunjukkan bahwa model berhasil mengenali sebagian besar area polip, meskipun masih terdapat sedikit kesalahan berupa False Positive dan False Negative.
+
+Sementara itu, Brightness & Contrast menghasilkan Dice 0,00. Prediksi model belum berhasil mencakup area polip pada citra tersebut.
+
+Analisis: Rotation menunjukkan hasil yang jauh lebih baik pada contoh ini, tetapi hasil satu citra belum cukup untuk menyatakan bahwa Rotation merupakan augmentasi terbaik secara keseluruhan.
+
+
+5.2 Citra Pengujian Kedua
+
+Pada citra kedua, ketiga skenario menghasilkan Dice 0,00. Model belum berhasil menghasilkan segmentasi yang beririsan dengan mask referensi.
+
+Pada skenario tanpa augmentasi dan Rotation, terlihat area merah yang menunjukkan prediksi polip pada lokasi yang tidak sesuai dengan mask referensi. Sementara itu, area biru menunjukkan bagian polip yang belum terdeteksi.
+
+Pada Brightness & Contrast, prediksi yang ditampilkan juga belum menunjukkan irisan yang sesuai dengan area polip referensi.
+
+Analisis: Citra ini memperlihatkan bahwa ketiga pendekatan masih mengalami kesulitan dalam mengenali polip pada kondisi visual tertentu.
+
+
+5.3 Citra Pengujian Ketiga
+
+Pada citra ketiga, tanpa augmentasi memperoleh Dice 0,96, Rotation memperoleh 0,78, dan Brightness & Contrast memperoleh 0,97.
+
+Ketiga skenario berhasil mendeteksi sebagian besar area polip. Namun, pada Rotation terlihat area merah yang lebih besar di luar mask referensi, sehingga menunjukkan adanya False Positive tambahan.
+
+Brightness & Contrast menghasilkan Dice tertinggi pada contoh ini, meskipun selisihnya sangat kecil dibandingkan baseline.
+
+Analisis: Perubahan pencahayaan dan kontras tidak selalu mengurangi kemampuan segmentasi. Pada citra tertentu, skenario tersebut justru menghasilkan prediksi yang sangat mendekati mask referensi.
+5.4 Citra Pengujian Keempat
+Pada citra keempat, tanpa augmentasi memperoleh Dice 0,97, Rotation memperoleh Dice 0,96, sedangkan Brightness & Contrast memperoleh Dice 0,93.
+
+Ketiga skenario berhasil mengidentifikasi sebagian besar area polip. Perbedaan terlihat pada bagian tepi objek, terutama munculnya sedikit False Positive dan False Negative.
+
+Analisis: Ketiga skenario memiliki kemampuan segmentasi yang relatif baik pada citra ini, dengan baseline menghasilkan Dice tertinggi.
+5.5 Ringkasan Analisis Peta Kesalahan
+Berdasarkan keempat contoh yang ditampilkan, dapat disimpulkan bahwa:
+1. Kemampuan model dalam mendeteksi polip berbeda-beda pada setiap citra pengujian.
+2. Rotation menunjukkan keunggulan pada citra pertama, tetapi menghasilkan kesalahan segmentasi lebih besar pada citra ketiga.
+3. Brightness & Contrast memperoleh performa terbaik pada citra ketiga, tetapi gagal melakukan segmentasi pada dua contoh pertama.
+4. Baseline menunjukkan hasil yang sangat baik pada citra ketiga dan keempat, tetapi tidak berhasil mendeteksi polip pada dua contoh pertama.
+Temuan ini memperlihatkan bahwa efektivitas augmentasi dapat berbeda bergantung pada karakteristik visual citra polip. Peta kesalahan juga menunjukkan bahwa evaluasi tidak cukup hanya mengamati keberhasilan mendeteksi objek, tetapi perlu memperhatikan kesalahan prediksi pada batas dan area di sekitar polip.
 
 <!-- Hijau = benar, merah = false positive, biru = false negative.
      Pertanyaan pemandu: Polip seperti apa yang sering terlewat (kecil? datar? warna mirip dinding usus?)
