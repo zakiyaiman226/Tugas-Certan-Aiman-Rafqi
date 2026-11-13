@@ -30,9 +30,9 @@ Augmentasi apa yang membantu U-Net menemukan polip pada citra kolonoskopi, dan a
 <!-- Isi dari Bagian 2 notebook. Pastikan CEPAT = False untuk hasil akhir. -->
 
 - Dataset: Kvasir-SEG (1000 citra kolonoskopi + mask polip), diperkecil ke 128 × 128 piksel.
-- Data uji: 200 citra (tetap). Data latih: ✍️ citra per ulangan.
-- Model: U-Net mini (±0,5 juta parameter), ✍️ epoch, ✍️ ulangan per skenario.
-- Dijalankan di: Google Colab T4.
+- Data uji: 200 citra (tetap). Data latih: 200 citra per ulangan.
+- Model: U-Net mini (±0,5 juta parameter), 40 epoch, 3 ulangan per skenario.
+- Dijalankan di: Google Colab T4 GPU.
 
 ![Contoh data](hasil/contoh_data.png)
 
@@ -43,13 +43,15 @@ Augmentasi apa yang membantu U-Net menemukan polip pada citra kolonoskopi, dan a
 
 | Skenario | Augmentasi (kode) | Alasan klinis | Hipotesis: Dice naik/turun/sama? |
 |---|---|---|---|
-| Tanpa augmentasi | — | Pembanding | — |
-| ✍️ | ✍️ `v2....` | ✍️ | ✍️ |
-| ✍️ | ✍️ `v2....` | ✍️ | ✍️ |
+| Tanpa augmentasi | — | Digunakan sebagai baseline untuk mengetahui kemampuan U-Net dalam melakukan segmentasi tanpa transformasi citra. | Pembanding |
+| Rotation | `v2.RandomRotation(degrees=180)` | Orientasi kamera endoskop dapat berubah akibat pergerakan dan manuver alat selama pemeriksaan kolonoskopi. | Dice meningkat |
+| Brightness & Contrast | `v2.ColorJitter(brightness=0.3, contrast=0.3)` | Intensitas pencahayaan dan kontras citra dapat bervariasi akibat perubahan pencahayaan endoskop dan kondisi permukaan mukosa. | Dice meningkat |
 
 Contoh augmentasi yang dicoba:
 
-![Contoh augmentasi](hasil/augmentasi_flip.png)
+![Contoh augmentasi Rotation](hasil/augmentasi_rotation.png)
+
+![Contoh augmentasi Brightness & Contrast](hasil/augmentasi_kecerahan_dan_kontras.png)
 <!-- Ganti nama file sesuai skenario kalian (lihat isi folder hasil/). -->
 
 ## 4. Hasil
