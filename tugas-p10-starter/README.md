@@ -213,9 +213,7 @@ GPT AI untuk membatu menulis skenario augmentasi dan memperbaiki error, pada bag
 
 ## Cara menjalankan ulang
 
-Eksperimen segmentasi polip dijalankan melalui metode menggunakan Google Colab.
-
-Eksperimen juga menggunakan Google Colab dengan langkah berikut:
+Eksperimen segmentasi polip dijalankan melalui metode menggunakan Google Colab dengan langkah berikut:
 
 1. Buka Google Colab.
 2. Unggah file `segmentasi_polip.ipynb` atau buka notebook melalui repository GitHub.
