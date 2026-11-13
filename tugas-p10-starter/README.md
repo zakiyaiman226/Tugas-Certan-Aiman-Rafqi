@@ -213,7 +213,7 @@ GPT AI untuk membatu menulis skenario augmentasi dan memperbaiki error, pada bag
 
 ## Cara menjalankan ulang
 
-Eksperimen segmentasi polip dapat dijalankan melalui dua metode, yaitu menggunakan lingkungan lokal dengan Jupyter Lab atau menggunakan Google Colab.
+Eksperimen segmentasi polip dijalankan melalui dua metode, yaitu menggunakan lingkungan lokal dengan Jupyter Lab atau menggunakan Google Colab.
 
 ### 1. Menjalankan melalui lingkungan lokal
 
@@ -243,12 +243,12 @@ Pastikan Python dan `uv` sudah terpasang pada komputer. Selanjutnya, lakukan lan
 
 ### 2. Menjalankan melalui Google Colab
 
-Eksperimen juga dapat dijalankan menggunakan Google Colab dengan langkah berikut:
+Eksperimen juga menggunakan Google Colab dengan langkah berikut:
 
 1. Buka Google Colab.
 2. Unggah file `segmentasi_polip.ipynb` atau buka notebook melalui repository GitHub.
 3. Pilih menu **Runtime → Change runtime type**.
-4. Pilih **T4 GPU** pada bagian Hardware accelerator, jika tersedia.
+4. Pilih **T4 GPU** pada bagian Hardware accelerator.
 5. Pastikan konfigurasi eksperimen menggunakan:
    - Jumlah citra latih: 200
    - Jumlah epoch: 40
@@ -256,19 +256,6 @@ Eksperimen juga dapat dijalankan menggunakan Google Colab dengan langkah berikut
    - Mode cepat (`CEPAT`): `False`
 6. Jalankan seluruh cell notebook menggunakan menu **Runtime → Run all**.
 7. Tunggu hingga seluruh skenario augmentasi selesai dijalankan.
-
-### 3. Keluaran Eksperimen
-
-Setelah proses pelatihan dan evaluasi selesai, notebook akan menghasilkan folder `hasil/` yang berisi:
-
-- `ringkasan.md`: Ringkasan hasil eksperimen.
-- `hasil.json`: Data hasil evaluasi setiap skenario.
-- `perbandingan.png`: Grafik perbandingan performa Dice dan IoU.
-- `peta_kesalahan.png`: Visualisasi kesalahan segmentasi.
-- `contoh_data.png`: Visualisasi contoh data dan mask.
-- File visualisasi augmentasi: Contoh hasil penerapan transformasi pada citra.
-
-Hasil tersebut digunakan untuk membandingkan performa model U-Net pada skenario tanpa augmentasi, Rotation, dan Brightness & Contrast.
 
 ## Referensi
 
