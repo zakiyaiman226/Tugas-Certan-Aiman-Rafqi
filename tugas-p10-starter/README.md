@@ -152,6 +152,7 @@ Temuan ini memperlihatkan bahwa efektivitas augmentasi dapat berbeda bergantung 
 ## 6. Pembahasan & kesimpulan
 
 6.1 Pembahasan
+
 Hasil eksperimen menunjukkan bahwa penerapan augmentasi data tidak selalu meningkatkan performa model U-Net dalam melakukan segmentasi polip pada citra kolonoskopi. Berdasarkan nilai rata-rata Dice dan IoU, skenario tanpa augmentasi menghasilkan performa tertinggi dibandingkan Rotation dan Brightness & Contrast.
 
 Skenario Rotation secara teoritis dapat membantu model mengenali polip dalam berbagai orientasi citra akibat perubahan posisi kamera endoskop selama pemeriksaan. Namun, hasil eksperimen menunjukkan Dice sebesar 0,590 dan IoU sebesar 0,478, sedikit lebih rendah dibandingkan baseline. Selain itu, standar deviasi Dice sebesar 0,042 menunjukkan variasi hasil antarulangan yang lebih besar. Dengan demikian, penerapan rotasi hingga 180° belum memberikan peningkatan performa yang konsisten pada konfigurasi penelitian ini.
